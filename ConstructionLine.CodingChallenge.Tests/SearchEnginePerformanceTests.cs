@@ -9,20 +9,18 @@ namespace ConstructionLine.CodingChallenge.Tests
     [TestFixture]
     public class SearchEnginePerformanceTests : SearchEngineTestsBase
     {
-        private List<Shirt> _shirts;
-        private SearchEngine _searchEngine;
+        private List<Shirt> shirts;
+        private SearchEngine searchEngine;
 
         [SetUp]
         public void Setup()
         {
-            
             var dataBuilder = new SampleDataBuilder(50000);
 
-            _shirts = dataBuilder.CreateShirts();
+            shirts = dataBuilder.CreateShirts();
 
-            _searchEngine = new SearchEngine(_shirts);
+            searchEngine = new SearchEngine(shirts);
         }
-
 
         [Test]
         public void PerformanceTest()
@@ -32,17 +30,17 @@ namespace ConstructionLine.CodingChallenge.Tests
 
             var options = new SearchOptions
             {
-                Colors = new List<Color> { Color.Red }
+                Colors = new List<Color> {Color.Red}
             };
 
-            var results = _searchEngine.Search(options);
+            var results = searchEngine.Search(options);
 
             sw.Stop();
             Console.WriteLine($"Test fixture finished in {sw.ElapsedMilliseconds} milliseconds");
 
             AssertResults(results.Shirts, options);
-            AssertSizeCounts(_shirts, options, results.SizeCounts);
-            AssertColorCounts(_shirts, options, results.ColorCounts);
+            AssertSizeCounts(shirts, options, results.SizeCounts);
+            AssertColorCounts(shirts, options, results.ColorCounts);
         }
     }
 }

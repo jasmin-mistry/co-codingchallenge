@@ -1,27 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConstructionLine.CodingChallenge
 {
     public class SearchEngine
     {
-        private readonly List<Shirt> _shirts;
+        private readonly List<Shirt> shirts;
 
         public SearchEngine(List<Shirt> shirts)
         {
-            _shirts = shirts;
-
-            // TODO: data preparation and initialisation of additional data structures to improve performance goes here.
-
+            this.shirts = shirts;
         }
-
 
         public SearchResults Search(SearchOptions options)
         {
-            // TODO: search logic goes here.
+            if (options == null) throw new ArgumentNullException(nameof(options));
 
-            return new SearchResults
-            {
-            };
+            if (shirts == null || !shirts.Any())
+                return new SearchResults(new List<Shirt>());
+
+            var searchCombination = options.GenerateSearchCombination();
+
+            var result = shirts
+                .Where(s => searchCombination.Contains(s.Combination))
+                .Select(x => x).AsEnumerable();
+
+            return new SearchResults(result.ToList());
         }
     }
 }

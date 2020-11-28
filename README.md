@@ -31,3 +31,57 @@ There are two tests in the test project; one simple search for red shirts out of
 We would like you to send us a link to a git repository that we can access with your implementation.
 
 The whole exercise should not take more than an hour to implement.
+
+## Test Completion Details
+
+Changes made:
+
+- The `Search()` method of [SearchEngine.cs](/ConstructionLine.CodingChallenge/SearchEngine.cs) class now, 
+
+  - Throws `ArgumentNullException` exception if the `SearchOptions` parameter is null,
+  - Returns new `SearchResults` object with empty shirts list and count for `SizeCount` and `ColorCount` will be 0,
+  - If shirts are available for search, it will get the search combination based on the `SearchOptions` parameter and generate the result based on shirts that are matching the search combinations. 
+  - Test for the `Search()` method implemented is covered in [SearchEngineTests.cs](/ConstructionLine.CodingChallenge.Tests/SearchEngineTests.cs).
+
+- A new method called `GenerateSearchCombination()` added to [SearchOptions.cs](/ConstructionLine.CodingChallenge/SearchOptions.cs)
+
+  This method returns all search combinations (basically Cartesian Product of `List<Size>` and `List<Color>`)
+
+  ```csharp
+  var input = new SearchOptions
+  {
+      Sizes = new List<Size> {Size.Small, Size.Medium},
+      Colors = new List<Color> {Color.Black, Color.Yellow, Color.Blue}
+  };
+  
+  // should return the below combinations
+  var output = new List<Tuple<Size, Color>>
+  {
+      new Tuple<Size, Color>(Size.Small, Color.Black),
+      new Tuple<Size, Color>(Size.Small, Color.Yellow),
+      new Tuple<Size, Color>(Size.Small, Color.Blue),
+      new Tuple<Size, Color>(Size.Medium, Color.Black),
+      new Tuple<Size, Color>(Size.Medium, Color.Yellow),
+      new Tuple<Size, Color>(Size.Medium, Color.Blue)
+  });
+  ```
+
+  Tests for the `GenerateSearchCombination()` method is covered under [SearchOptionsTests.cs](/ConstructionLine.CodingChallenge.Tests/SearchOptionsTests.cs)
+
+- [SearchResults](/ConstructionLine.CodingChallenge/SearchResults.cs) class properties `SizeCounts` and `ColorCounts` are now `get` only properties. This will dynamically return count based on the `SearchResults.Shirts` list property.
+
+### Performance Test 
+
+Takes between 21 - 23 milliseconds to complete. 
+
+![Performance Test](images/PerformanceTest.gif)
+
+## Build using PowerShell
+
+Run the below command to build the solution locally;
+
+Execute [build.ps1](/build.ps1) to compile application and package release artifacts. Outputs to `/dist/` folder.
+
+The build script also outputs the code coverage result. The coverage report files can be found under `dist\Coverage` folder. After the build process is executed you can open the coverage report using `dist\Coverage\index.html`
+
+![running full build](images/BuildAndCoverageResult.gif)

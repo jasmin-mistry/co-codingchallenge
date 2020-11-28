@@ -4,6 +4,14 @@ namespace ConstructionLine.CodingChallenge
 {
     public class Shirt
     {
+        public Shirt(Guid id, string name, Size size, Color color)
+        {
+            Id = id;
+            Name = name;
+            Size = size;
+            Color = color;
+        }
+
         public Guid Id { get; }
 
         public string Name { get; }
@@ -12,12 +20,6 @@ namespace ConstructionLine.CodingChallenge
 
         public Color Color { get; set; }
 
-        public Shirt(Guid id, string name, Size size, Color color)
-        {
-            Id = id;
-            Name = name;
-            Size = size;
-            Color = color;
-        }
+        public Tuple<Size, Color> Combination => new Tuple<Size, Color>(Size, Color);
     }
 }

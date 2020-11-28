@@ -1,31 +1,39 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ConstructionLine.CodingChallenge
 {
     public class SearchResults
     {
-        public List<Shirt> Shirts { get; set; }
+        public SearchResults(List<Shirt> shirtsFound)
+        {
+            Shirts = shirtsFound;
+        }
 
+        public List<Shirt> Shirts { get; }
 
-        public List<SizeCount> SizeCounts { get; set; }
+        public List<SizeCount> SizeCounts
+        {
+            get
+            {
+                return Size.All.Select(x => new SizeCount
+                {
+                    Size = x,
+                    Count = Shirts.Count(s => s.Size == x)
+                }).ToList();
+            }
+        }
 
-
-        public List<ColorCount> ColorCounts { get; set; }
-    }
-
-
-    public class SizeCount
-    {
-        public Size Size { get; set; }
-
-        public int Count { get; set; }
-    }
-
-
-    public class ColorCount
-    {
-        public Color Color { get; set; }
-
-        public int Count { get; set; }
+        public List<ColorCount> ColorCounts
+        {
+            get
+            {
+                return Color.All.Select(x => new ColorCount
+                {
+                    Color = x,
+                    Count = Shirts.Count(s => s.Color == x)
+                }).ToList();
+            }
+        }
     }
 }
